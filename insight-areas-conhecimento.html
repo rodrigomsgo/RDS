@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>document.documentElement.className += ' js';</script>
+<title>As dez áreas de conhecimento no gerenciamento de projetos — RDS Insights</title>
+<meta name="description" content="Um guia prático sobre as dez áreas de conhecimento que estruturam a gestão de projetos e o que acontece quando uma delas é negligenciada.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#14233f;--navy-2:#0f1b30;--navy-3:#0a1426;
+    --ink:#1a2436;--ink-soft:#354259;--muted:#6b7589;
+    --paper:#ffffff;--paper-2:#f6f4ef;--paper-3:#efece4;
+    --line:#e6e2d8;--line-2:#d8d3c6;--line-dark:rgba(255,255,255,.12);
+    --bronze:#a06c30;--bronze-2:#bd8a52;--bronze-3:#cfa06a;
+    --on-dark:#eef1f7;--on-dark-mute:#9aa6c2;
+    --maxw:1280px;--read:720px;
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --serif:'Newsreader',Georgia,'Times New Roman',serif;
+    --sans:'Hanken Grotesk',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+  body{font-family:var(--sans);color:var(--ink);background:var(--paper);
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.5;overflow-x:hidden;}
+  a{color:inherit;text-decoration:none;}
+  img{display:block;max-width:100%;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 44px;}
+
+  .kicker{display:inline-flex;align-items:center;gap:11px;font-family:var(--sans);
+    font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;font-weight:700;color:var(--bronze);}
+  .kicker::before{content:"";width:24px;height:1px;background:var(--bronze);display:inline-block;}
+
+  .ph-img{position:relative;overflow:hidden;background:
+      repeating-linear-gradient(135deg,#eae6dc 0 1.5px,transparent 1.5px 14px),var(--paper-2);
+    border:1px solid var(--line);display:flex;align-items:flex-end;}
+  .ph-img .tag{font-family:ui-monospace,Menlo,monospace;font-size:10.5px;letter-spacing:.04em;color:#9a937f;
+    background:rgba(255,255,255,.86);padding:7px 11px;margin:14px;border-radius:2px;line-height:1.4;max-width:80%;}
+
+  .readlink{display:inline-flex;align-items:center;gap:9px;font-family:var(--sans);font-size:14px;font-weight:600;color:var(--navy);
+    border-bottom:1.5px solid var(--bronze-2);padding-bottom:3px;transition:gap .3s var(--ease),color .3s;}
+  .readlink .ar{transition:transform .3s var(--ease);}
+  .readlink:hover{color:var(--bronze);} .readlink:hover .ar{transform:translateX(4px);}
+  .btn{display:inline-flex;align-items:center;gap:10px;justify-content:center;font-family:var(--sans);
+    font-size:14px;font-weight:600;padding:15px 26px;border-radius:2px;cursor:pointer;border:1px solid transparent;
+    transition:all .35s var(--ease);white-space:nowrap;}
+  .btn .ar{transition:transform .35s var(--ease);} .btn:hover .ar{transform:translateX(4px);}
+  .btn-primary{background:var(--bronze-2);color:#fff;} .btn-primary:hover{background:var(--bronze);}
+  .btn-ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.28);} .btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.06);}
+
+  /* header */
+  header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.9);backdrop-filter:blur(14px) saturate(1.4);
+    border-bottom:1px solid var(--line);}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:78px;}
+  .nav .logo{height:30px;width:auto;}
+  .nav-links{display:flex;align-items:center;gap:36px;}
+  .nav-links a{font-family:var(--sans);font-size:13.5px;font-weight:500;color:var(--ink-soft);transition:color .25s;position:relative;padding:6px 0;}
+  .nav-links a:hover{color:var(--navy);}
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:0;height:1.5px;width:0;background:var(--bronze-2);transition:width .3s var(--ease);}
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--navy);border:1px solid var(--line-2);padding:11px 20px;border-radius:2px;transition:all .3s var(--ease);}
+  .nav-cta:hover{background:var(--navy);border-color:var(--navy);color:#fff;}
+  .burger{display:none;flex-direction:column;gap:5px;width:30px;height:30px;justify-content:center;cursor:pointer;background:none;border:none;}
+  .burger span{height:1.5px;background:var(--navy);width:22px;}
+  .nav-right{display:flex;align-items:center;gap:18px;}
+
+  /* article header */
+  .ahead{padding:130px 0 48px;border-bottom:1px solid var(--line);}
+  .crumb{display:inline-flex;align-items:center;gap:9px;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--muted);transition:color .25s;}
+  .crumb:hover{color:var(--navy);} .crumb .ar{transition:transform .3s var(--ease);}
+  .crumb:hover .ar{transform:translateX(-3px);}
+  .ahead .cat{font-family:var(--sans);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:var(--bronze);margin-top:30px;display:block;}
+  .ahead h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.3rem,4.6vw,4rem);line-height:1.02;letter-spacing:-.02em;margin-top:18px;max-width:18ch;}
+  .ahead h1 em{font-style:italic;color:var(--navy);}
+  .ahead .dek{font-family:var(--sans);font-size:clamp(1.1rem,1.5vw,1.34rem);color:var(--muted);line-height:1.6;margin-top:26px;max-width:60ch;}
+  .ahead .meta{display:flex;align-items:center;gap:16px;margin-top:30px;font-family:var(--sans);font-size:13px;color:var(--muted);flex-wrap:wrap;}
+  .ahead .meta .dot{width:3px;height:3px;border-radius:50%;background:var(--line-2);}
+  .ahead .meta strong{color:var(--ink);font-weight:600;}
+
+  .lead-img{aspect-ratio:16/7.2;border-radius:3px;margin:48px 0 0;}
+  .lead-img .tag{margin:18px;}
+
+  /* article body */
+  .article{padding:64px 0 96px;}
+  .prose{max-width:var(--read);margin:0 auto;}
+  .prose>p{font-family:var(--serif);font-size:1.26rem;line-height:1.74;color:var(--ink-soft);margin-bottom:1.5rem;font-weight:400;}
+  .prose>p.lead-p{font-size:1.42rem;line-height:1.62;color:var(--ink);}
+  .prose>p:first-of-type::first-letter{font-size:4.4rem;line-height:.72;float:left;font-weight:500;color:var(--navy);margin:.06em .14em 0 0;font-family:var(--serif);}
+  .prose strong{font-weight:600;color:var(--ink);}
+  .prose em{font-style:italic;}
+  .prose h2{font-family:var(--serif);font-weight:500;font-size:1.9rem;line-height:1.15;letter-spacing:-.014em;color:var(--ink);margin:3rem 0 1.1rem;}
+  .prose h3{font-family:var(--sans);font-weight:700;font-size:1.02rem;letter-spacing:.02em;color:var(--navy);margin:2rem 0 .6rem;}
+  .hr{height:1px;background:var(--line);margin:3rem auto;max-width:var(--read);}
+
+  /* numbered knowledge areas */
+  .areas{max-width:var(--read);margin:0 auto;counter-reset:area;}
+  .area{display:grid;grid-template-columns:62px 1fr;gap:8px 26px;padding:30px 0;border-top:1px solid var(--line);align-items:baseline;}
+  .area:last-child{border-bottom:1px solid var(--line);}
+  .area .num{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--bronze);font-variant-numeric:tabular-nums;letter-spacing:.06em;padding-top:.55rem;}
+  .area .at{font-family:var(--serif);font-size:1.5rem;font-weight:500;line-height:1.12;letter-spacing:-.01em;color:var(--ink);}
+  .area .ad{grid-column:2;font-family:var(--sans);font-size:1.02rem;line-height:1.62;color:var(--muted);margin-top:6px;}
+
+  /* pull quote */
+  .pull{max-width:880px;margin:3.4rem auto;padding:0 20px;text-align:center;}
+  .pull blockquote{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(1.6rem,3vw,2.3rem);line-height:1.3;color:var(--navy);letter-spacing:-.01em;}
+  .pull .src{font-family:var(--sans);font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--bronze);margin-top:22px;}
+
+  /* callout / tie-back */
+  .callout{max-width:var(--read);margin:3.4rem auto 0;background:var(--paper-2);border:1px solid var(--line);border-radius:4px;padding:40px 42px;}
+  .callout .k{font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--bronze);}
+  .callout h3{font-family:var(--serif);font-weight:500;font-size:1.55rem;line-height:1.2;margin:14px 0 0;color:var(--ink);}
+  .callout p{font-family:var(--sans);font-size:1.02rem;line-height:1.6;color:var(--muted);margin-top:14px;}
+  .callout .btn{margin-top:24px;}
+
+  /* related */
+  .related{background:var(--paper-2);border-top:1px solid var(--line);padding:84px 0;}
+  .related .rlabel{font-family:var(--sans);font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;font-weight:700;color:var(--ink);}
+  .rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:34px;margin-top:38px;}
+  .rcard{cursor:pointer;}
+  .rcard .rimg{aspect-ratio:16/10;border-radius:3px;margin-bottom:18px;transition:transform .5s var(--ease);}
+  .rcard:hover .rimg{transform:translateY(-5px);}
+  .rcard .rcat{font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--bronze);}
+  .rcard h4{font-family:var(--serif);font-size:1.32rem;font-weight:500;line-height:1.16;margin-top:11px;color:var(--ink);}
+
+  /* footer */
+  footer{background:var(--navy-3);border-top:1px solid var(--line-dark);padding:74px 0 40px;}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px;}
+  .foot-brand .logo{height:32px;margin-bottom:22px;}
+  .foot-brand p{font-family:var(--sans);font-size:.95rem;color:var(--on-dark-mute);max-width:32ch;line-height:1.6;}
+  .foot-col h4{font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--bronze-3);font-weight:700;margin-bottom:20px;}
+  .foot-col a{display:block;font-family:var(--sans);font-size:.96rem;color:var(--on-dark-mute);padding:7px 0;transition:color .25s;}
+  .foot-col a:hover{color:#fff;}
+  .foot-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-top:60px;padding-top:30px;border-top:1px solid var(--line-dark);}
+  .foot-bottom p{font-family:var(--sans);font-size:13px;color:var(--on-dark-mute);}
+  .foot-bottom .creg{font-family:var(--sans);font-size:12px;letter-spacing:.06em;color:var(--on-dark-mute);opacity:.7;}
+
+  .rv{opacity:1;transform:none;}
+  html.js .rv{transform:translateY(20px);transition:transform .8s var(--ease);}
+  html.js .rv.in{transform:none;}
+  @media (prefers-reduced-motion:reduce){html.js .rv{transform:none;transition:none;}html{scroll-behavior:auto;}}
+
+  @media (max-width:1080px){.wrap{padding:0 32px;}}
+  @media (max-width:860px){
+    .nav-links,.nav-cta{display:none;} .burger{display:flex;}
+    .rgrid{grid-template-columns:1fr;gap:30px;}
+    .foot-grid{grid-template-columns:1fr 1fr;gap:40px;} .foot-brand{grid-column:1/-1;}
+    .lead-img{aspect-ratio:16/10;}
+  }
+  @media (max-width:540px){
+    .wrap{padding:0 22px;}
+    .area{grid-template-columns:1fr;gap:4px;} .area .ad{grid-column:1;}
+    .foot-grid{grid-template-columns:1fr;}
+    .callout{padding:30px 26px;}
+  }
+</style>
+</head>
+<body>
+<template id="__bundler_thumbnail">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<rect width="100" height="100" fill="#f6f4ef"></rect>
+<text x="50" y="46" font-family="Newsreader, serif" font-size="34" font-weight="500" fill="#14233f" text-anchor="middle">10</text>
+<text x="50" y="64" font-family="Hanken Grotesk, sans-serif" font-size="6.5" letter-spacing="2.5" font-weight="700" fill="#a06c30" text-anchor="middle">ÁREAS</text>
+</svg>
+</template>
+
+<!-- HEADER -->
+<header>
+  <div class="wrap nav">
+    <a href="modelo-2.html" aria-label="RDS Insights"><img class="logo" src="assets/logo-rds-dark.png" alt="RDS — Engenharia e Consultoria"></a>
+    <nav class="nav-links">
+      <a href="modelo-2.html#insights">Insights</a>
+      <a href="modelo-2.html#servicos">Serviços</a>
+      <a href="index.html">Quem somos</a>
+      <a href="modelo-2.html#contato">Contato</a>
+    </nav>
+    <div class="nav-right">
+      <a class="nav-cta" href="modelo-2.html#contato">Falar com a RDS</a>
+      <button class="burger" id="burger" aria-label="Menu" onclick="location.href='modelo-2.html#insights'"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- ARTICLE HEAD -->
+<section class="ahead">
+  <div class="wrap">
+    <a class="crumb" href="modelo-2.html#insights"><span class="ar">←</span> Voltar para Insights</a>
+    <span class="cat">Gestão de projetos</span>
+    <h1>As dez áreas de conhecimento que decidem o <em>sucesso</em> de um projeto.</h1>
+    <p class="dek">Prazo, custo, escopo e risco não falham isolados — falham juntos. Um guia prático sobre as dez frentes que toda gestão de projetos precisa manter sob controle, e o que acontece quando uma delas é negligenciada.</p>
+    <div class="meta">
+      <span>Por <strong>RDS — Engenharia e Consultoria</strong></span>
+      <span class="dot"></span>
+      <span>Gestão de projetos</span>
+      <span class="dot"></span>
+      <span>9 min de leitura</span>
+    </div>
+    <div class="lead-img ph-img"><span class="tag">[ foto editorial — equipe técnica em campo / obra de infraestrutura ]</span></div>
+  </div>
+</section>
+
+<!-- ARTICLE BODY -->
+<article class="article">
+  <div class="prose">
+    <p class="lead-p">Todo projeto que dá errado costuma ter uma boa desculpa pronta: o prazo era curto, o orçamento apertado, o cliente mudou de ideia. Mas, quando se olha de perto, a falha quase nunca está em uma só frente — está na forma como as várias frentes deixaram de conversar entre si.</p>
+
+    <p>Gerenciar um projeto é, no fundo, manter dez áreas de conhecimento sob controle ao mesmo tempo. Elas são complementares: um cronograma só é confiável se o escopo estiver definido; o custo só fecha se o risco estiver mapeado; a qualidade só se sustenta se a comunicação funcionar. Negligenciar uma delas raramente derruba o projeto sozinha — mas abre a primeira rachadura por onde as outras começam a ceder.</p>
+
+    <p>A seguir, as dez áreas que estruturam a disciplina de gestão de projetos, com uma leitura prática de cada uma e do sintoma típico de quando ela é deixada de lado.</p>
+  </div>
+
+  <div class="hr"></div>
+
+  <div class="areas">
+    <div class="area">
+      <span class="num">01</span>
+      <div class="at">Integração</div>
+      <p class="ad">A área que costura todas as outras. Garante que decisões tomadas em uma frente — uma mudança de escopo, por exemplo — sejam refletidas no cronograma, no custo e no risco. Sem integração, cada área otimiza a si mesma e o projeto como um todo se desorganiza.</p>
+    </div>
+    <div class="area">
+      <span class="num">02</span>
+      <div class="at">Escopo</div>
+      <p class="ad">Define exatamente o que o projeto entrega — e, igualmente importante, o que ele não entrega. Escopo mal delimitado é a origem silenciosa do <em>scope creep</em>: pequenas adições que ninguém precificou e que, somadas, consomem prazo e margem.</p>
+    </div>
+    <div class="area">
+      <span class="num">03</span>
+      <div class="at">Cronograma</div>
+      <p class="ad">Organiza as atividades no tempo e revela o caminho crítico — a sequência que não admite atraso. Um cronograma que não é revisitado deixa de ser um instrumento de gestão e vira apenas um documento de abertura.</p>
+    </div>
+    <div class="area">
+      <span class="num">04</span>
+      <div class="at">Custos</div>
+      <p class="ad">Estima, orça e controla os recursos financeiros. O risco aqui não é o gasto pontual, e sim a perda de visibilidade: quando o custo real só é confrontado com o previsto tarde demais para corrigir.</p>
+    </div>
+    <div class="area">
+      <span class="num">05</span>
+      <div class="at">Qualidade</div>
+      <p class="ad">Assegura que a entrega atenda aos requisitos definidos — não mais, não menos. Qualidade tratada como inspeção final, e não como processo contínuo, transforma defeitos baratos de corrigir em retrabalho caro.</p>
+    </div>
+    <div class="area">
+      <span class="num">06</span>
+      <div class="at">Recursos</div>
+      <p class="ad">Gere pessoas, equipamentos e materiais — disponibilidade, alocação e competência. Projetos travam menos por falta de plano e mais por falta da pessoa certa no momento certo.</p>
+    </div>
+    <div class="area">
+      <span class="num">07</span>
+      <div class="at">Comunicações</div>
+      <p class="ad">Define quem precisa saber de quê, quando e em que formato. É a área mais subestimada: a maioria dos conflitos de projeto não nasce de erro técnico, mas de informação que não chegou a quem decidia.</p>
+    </div>
+    <div class="area">
+      <span class="num">08</span>
+      <div class="at">Riscos</div>
+      <p class="ad">Antecipa o que pode dar errado e prepara a resposta antes que aconteça. Gestão de risco não elimina a incerteza — ela troca a surpresa cara pela decisão planejada e barata.</p>
+    </div>
+    <div class="area">
+      <span class="num">09</span>
+      <div class="at">Aquisições</div>
+      <p class="ad">Cuida das contratações externas: fornecedores, terceiros, contratos. Em infraestrutura, é frequentemente aqui que o risco contratual se concentra — em cláusulas, prazos e responsabilidades mal alinhados.</p>
+    </div>
+    <div class="area">
+      <span class="num">10</span>
+      <div class="at">Partes interessadas</div>
+      <p class="ad">Mapeia e gere as expectativas de todos os afetados pelo projeto — do cliente ao órgão regulador. Um <em>stakeholder</em> ignorado raramente fica em silêncio: ele reaparece como um obstáculo no pior momento.</p>
+    </div>
+  </div>
+
+  <div class="pull">
+    <blockquote>“Projetos quase nunca falham por uma única razão. Falham porque uma área foi negligenciada — e arrastou as outras consigo.”</blockquote>
+    <div class="src">RDS — Engenharia e Consultoria</div>
+  </div>
+
+  <div class="prose">
+    <h2>Por que olhar as dez juntas</h2>
+    <p>A tentação, sob pressão, é proteger a área que mais incomoda no momento — o prazo nesta semana, o custo na próxima. Mas tratar as dez frentes de forma isolada é o que produz o efeito dominó: ganha-se tempo cortando escopo, perde-se qualidade; aperta-se o custo, descobre-se um risco não provisionado.</p>
+    <p>É por isso que a gestão madura de projetos não pergunta apenas <em>“estamos no prazo?”</em>, e sim <em>“o que estamos comprometendo para continuar no prazo?”</em>. Essa leitura cruzada — externa, técnica e independente — é exatamente o terreno em que a RDS atua.</p>
+  </div>
+
+  <div class="callout">
+    <span class="k">Como a RDS aplica</span>
+    <h3>Levamos essa leitura para dentro da sua carteira de contratos.</h3>
+    <p>No diagnóstico RDS, cada projeto e contrato é avaliado sob essas frentes de forma cruzada — e o resultado se traduz em uma única nota comparável: o RDS Score de saúde da carteira.</p>
+    <a class="btn btn-primary" href="insight-rds-score.html">Entenda o RDS Score <span class="ar">→</span></a>
+  </div>
+</article>
+
+<!-- RELATED -->
+<section class="related">
+  <div class="wrap">
+    <div class="rlabel">Continue lendo</div>
+    <div class="rgrid">
+      <a class="rcard" href="insight-rds-score.html">
+        <div class="rimg ph-img"><span class="tag">[ foto — dashboard de carteira ]</span></div>
+        <div class="rcat">Metodologia RDS</div>
+        <h4>O que é o RDS Score?</h4>
+      </a>
+      <a class="rcard" href="modelo-2.html#insights">
+        <div class="rimg ph-img"><span class="tag">[ foto — quadro de tarefas ]</span></div>
+        <div class="rcat">Gestão de projetos</div>
+        <h4>A importância de um backlog sempre atualizado.</h4>
+      </a>
+      <a class="rcard" href="modelo-2.html#insights">
+        <div class="rimg ph-img"><span class="tag">[ foto — rodovia / canteiro ]</span></div>
+        <div class="rcat">Carteira contratual</div>
+        <h4>Contratos deficitários: o custo que aparece antes do balanço.</h4>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img class="logo" src="assets/logo-rds-light.png" alt="RDS — Engenharia e Consultoria">
+        <p>Diagnóstico, monitoramento e consultoria estratégica da carteira contratual de empresas de infraestrutura.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Conteúdo</h4>
+        <a href="modelo-2.html#insights">Insights</a>
+        <a href="insight-areas-conhecimento.html">Gestão de projetos</a>
+        <a href="insight-rds-score.html">RDS Score</a>
+        <a href="modelo-2.html#servicos">Serviços</a>
+      </div>
+      <div class="foot-col">
+        <h4>Serviços</h4>
+        <a href="modelo-2.html#servicos">Diagnóstico de carteira</a>
+        <a href="modelo-2.html#servicos">Monitoramento contínuo</a>
+        <a href="modelo-2.html#servicos">Consultoria estratégica</a>
+        <a href="modelo-2.html#servicos">Gerenciamento de projetos</a>
+      </div>
+      <div class="foot-col">
+        <h4>Contato</h4>
+        <a href="https://wa.me/5562999063430" target="_blank" rel="noopener">(62) 99906-3430</a>
+        <a href="mailto:atendimento@rdsengenhariaeconsultoria.com.br">E-mail</a>
+        <a href="modelo-2.html#contato">Goiânia / GO</a>
+        <a href="modelo-2.html#contato">Atendimento em todo o Brasil</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2026 RDS — Engenharia e Consultoria. Todos os direitos reservados.</p>
+      <span class="creg">Engenharia · Consultoria · Gestão de contratos</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const rvEls = Array.from(document.querySelectorAll('.rv'));
+  function revealInView(){
+    const h = window.innerHeight || document.documentElement.clientHeight;
+    for(let i=rvEls.length-1;i>=0;i--){
+      const el = rvEls[i];
+      if(el.getBoundingClientRect().top < h*0.92){ el.classList.add('in'); rvEls.splice(i,1); }
+    }
+  }
+  revealInView();
+  window.addEventListener('scroll', revealInView, {passive:true});
+  window.addEventListener('resize', revealInView, {passive:true});
+  window.addEventListener('load', revealInView);
+  setTimeout(() => document.querySelectorAll('.rv').forEach(el => el.classList.add('in')), 2000);
+</script>
+</body>
+</html>
