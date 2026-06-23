@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>document.documentElement.className += ' js';</script>
+<title>Índice de Risco do Contrato (IRC) — RDS Insights</title>
+<meta name="description" content="O IRC é o índice de 0 a 8 que mede, de forma independente da Nota Final, o risco e a continuidade de cada contrato — eixo de entrada da Classificação Estratégica.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#14233f;--navy-2:#0f1b30;--navy-3:#0a1426;
+    --ink:#1a2436;--ink-soft:#354259;--muted:#6b7589;
+    --paper:#ffffff;--paper-2:#f6f4ef;--paper-3:#efece4;
+    --line:#e6e2d8;--line-2:#d8d3c6;--line-dark:rgba(255,255,255,.12);
+    --bronze:#a06c30;--bronze-2:#bd8a52;--bronze-3:#cfa06a;
+    --on-dark:#eef1f7;--on-dark-mute:#9aa6c2;
+    --maxw:1280px;--read:720px;
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --serif:'Newsreader',Georgia,'Times New Roman',serif;
+    --sans:'Hanken Grotesk',system-ui,sans-serif;
+    --risk-low:#009245;--risk-mid:#ffd230;--risk-high:#d72d01;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+  body{font-family:var(--sans);color:var(--ink);background:var(--paper);
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.5;overflow-x:hidden;}
+  a{color:inherit;text-decoration:none;}
+  img{display:block;max-width:100%;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 44px;}
+
+  .btn{display:inline-flex;align-items:center;gap:10px;justify-content:center;font-family:var(--sans);
+    font-size:14px;font-weight:600;padding:15px 26px;border-radius:2px;cursor:pointer;border:1px solid transparent;
+    transition:all .35s var(--ease);white-space:nowrap;}
+  .btn .ar{transition:transform .35s var(--ease);} .btn:hover .ar{transform:translateX(4px);}
+  .btn-primary{background:var(--bronze-2);color:#fff;} .btn-primary:hover{background:var(--bronze);}
+
+  .kicker{display:inline-flex;align-items:center;gap:11px;font-family:var(--sans);
+    font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;font-weight:700;color:var(--bronze);}
+  .kicker::before{content:"";width:24px;height:1px;background:var(--bronze);display:inline-block;}
+
+  /* header */
+  header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0);
+    transition:background .4s var(--ease),border-color .4s var(--ease);border-bottom:1px solid transparent;}
+  header.solid{background:rgba(255,255,255,.9);backdrop-filter:blur(14px) saturate(1.4);border-bottom-color:var(--line);}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:78px;}
+  .nav .logo{height:30px;width:auto;}
+  .nav-links{display:flex;align-items:center;gap:36px;}
+  .nav-links a{font-family:var(--sans);font-size:13.5px;font-weight:500;color:var(--ink-soft);transition:color .25s;position:relative;padding:6px 0;}
+  .nav-links a:hover{color:var(--navy);}
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:0;height:1.5px;width:0;background:var(--bronze-2);transition:width .3s var(--ease);}
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--navy);border:1px solid var(--line-2);padding:11px 20px;border-radius:2px;transition:all .3s var(--ease);}
+  .nav-cta:hover{background:var(--navy);border-color:var(--navy);color:#fff;}
+  .burger{display:none;flex-direction:column;gap:5px;width:30px;height:30px;justify-content:center;cursor:pointer;background:none;border:none;}
+  .burger span{height:1.5px;background:var(--navy);width:22px;}
+  .nav-right{display:flex;align-items:center;gap:18px;}
+
+  /* article header */
+  .ahead{padding:130px 0 48px;border-bottom:1px solid var(--line);}
+  .ahead .cat{font-family:var(--sans);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:var(--bronze);display:block;}
+  .ahead h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.3rem,4.6vw,4rem);line-height:1.02;letter-spacing:-.02em;margin-top:18px;max-width:16ch;}
+  .ahead h1 em{font-style:italic;color:var(--navy);}
+  .ahead .dek{font-family:var(--sans);font-size:clamp(1.1rem,1.5vw,1.34rem);color:var(--muted);line-height:1.6;margin-top:26px;max-width:60ch;}
+  .ahead .meta{display:flex;align-items:center;gap:16px;margin-top:30px;font-family:var(--sans);font-size:13px;color:var(--muted);flex-wrap:wrap;}
+  .ahead .meta .dot{width:3px;height:3px;border-radius:50%;background:var(--line-2);}
+  .ahead .meta strong{color:var(--ink);font-weight:600;}
+
+  /* score hero visual (IRC dial) */
+  .score-hero{margin-top:48px;background:var(--navy-3);border-radius:4px;overflow:hidden;position:relative;padding:54px 56px;display:grid;grid-template-columns:auto 1fr;gap:54px;align-items:center;}
+  .score-hero .road{position:absolute;inset:0;opacity:.32;}
+  .score-hero .road img{position:absolute;right:0;bottom:0;width:60%;min-width:420px;
+    -webkit-mask-image:linear-gradient(to left,#000 30%,transparent 92%);mask-image:linear-gradient(to left,#000 30%,transparent 92%);}
+  .score-dial{position:relative;z-index:2;text-align:center;}
+  .score-dial .big{font-family:var(--serif);font-weight:300;font-size:7rem;line-height:.86;color:#fff;letter-spacing:-.03em;}
+  .score-dial .big sub{font-size:2.2rem;color:var(--bronze-3);vertical-align:baseline;font-weight:300;}
+  .score-dial .lab{font-family:var(--sans);font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:var(--bronze-3);margin-top:14px;}
+  .score-hero .scopy{position:relative;z-index:2;}
+  .score-hero .scopy p{font-family:var(--serif);font-size:1.4rem;line-height:1.4;color:#fff;font-weight:300;}
+  .score-hero .scopy .sm{font-family:var(--sans);font-size:.92rem;color:var(--on-dark-mute);margin-top:16px;line-height:1.55;}
+
+  /* article body */
+  .article{padding:64px 0 96px;}
+  .prose{max-width:var(--read);margin:0 auto;}
+  .prose>p{font-family:var(--serif);font-size:1.26rem;line-height:1.74;color:var(--ink-soft);margin-bottom:1.5rem;font-weight:400;}
+  .prose>p.lead-p{font-size:1.42rem;line-height:1.62;color:var(--ink);}
+  .prose>p:first-of-type::first-letter{font-size:4.4rem;line-height:.72;float:left;font-weight:500;color:var(--navy);margin:.06em .14em 0 0;font-family:var(--serif);}
+  .prose strong{font-weight:600;color:var(--ink);} .prose em{font-style:italic;}
+  .prose h2{font-family:var(--serif);font-weight:500;font-size:1.9rem;line-height:1.15;letter-spacing:-.014em;color:var(--ink);margin:3rem 0 1.1rem;}
+  .hr{height:1px;background:var(--line);margin:3rem auto;max-width:var(--read);}
+
+  /* dimensions table */
+  .dims{max-width:var(--read);margin:0 auto;}
+  .dims-head{display:grid;grid-template-columns:46px 1fr;gap:0 18px;padding-bottom:8px;
+    font-family:var(--sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--muted);}
+  .drow{display:grid;grid-template-columns:46px 1fr;gap:0 18px;padding:20px 0;border-top:1px solid var(--line);align-items:center;}
+  .dims .drow:last-of-type{border-bottom:1px solid var(--line);}
+  .drow .dcode{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--bronze);font-variant-numeric:tabular-nums;letter-spacing:.04em;}
+  .drow .dmain{min-width:0;}
+  .drow .dmain .dn{font-family:var(--serif);font-size:1.24rem;font-weight:500;color:var(--ink);line-height:1.1;}
+  .drow .dmain .dc{font-family:var(--sans);font-size:.95rem;color:var(--muted);margin-top:5px;line-height:1.5;}
+  .drow .dest{justify-self:end;}
+  .badge{display:inline-block;font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:2px;white-space:nowrap;}
+  .badge.perm{background:var(--paper-3);color:var(--ink-soft);}
+  .badge.ativ{background:rgba(160,108,48,.13);color:var(--bronze);}
+
+  /* equation block */
+  .eq{max-width:var(--read);margin:1.8rem auto 0;background:var(--navy-3);border-radius:4px;padding:30px 34px;}
+  .eq .eqk{font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--bronze-3);}
+  .eq .eqf{font-family:var(--serif);font-style:italic;font-size:clamp(1.05rem,2.4vw,1.34rem);line-height:1.4;color:#fff;margin-top:14px;letter-spacing:.01em;}
+  .eq .eqf .eqno{font-family:var(--sans);font-style:normal;font-size:.8rem;font-weight:700;color:var(--bronze-3);margin-left:10px;vertical-align:super;}
+  .eq .eqn{font-family:var(--sans);font-size:.92rem;line-height:1.55;color:var(--on-dark-mute);margin-top:14px;}
+
+  /* risk scale */
+  .scale{max-width:var(--read);margin:0 auto;}
+  .ruler{position:relative;margin-bottom:74px;}
+  .rlabels{display:flex;}
+  .rlab{text-align:center;padding:0 6px 11px;}
+  .rlab .rc{font-family:var(--sans);font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;line-height:1;}
+  .rlab .rr{display:block;font-family:var(--sans);font-size:11px;font-weight:600;color:var(--muted);margin-top:5px;font-variant-numeric:tabular-nums;letter-spacing:.02em;}
+  .rtrack{display:flex;height:22px;border-radius:11px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.07);}
+  .rseg{height:100%;}
+  .rseg + .rseg{box-shadow:inset 2px 0 0 var(--paper);}
+  .rpointer{position:absolute;top:100%;transform:translateX(-50%);margin-top:10px;display:flex;flex-direction:column;align-items:center;}
+  .rpointer .tri{width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:7px solid var(--navy-3);}
+  .rpointer .pill{margin-top:7px;background:var(--navy-3);color:#fff;font-family:var(--serif);font-size:1.05rem;font-weight:500;padding:6px 14px;border-radius:3px;white-space:nowrap;box-shadow:0 6px 18px rgba(10,20,38,.18);}
+  .rpointer .pill small{font-family:var(--sans);font-size:.58rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--bronze-3);margin-left:8px;}
+  .s-low{background:var(--risk-low);} .s-mid{background:var(--risk-mid);} .s-high{background:var(--risk-high);}
+  .band{display:grid;grid-template-columns:8px 150px 1fr;gap:0 22px;padding:18px 0;border-top:1px solid var(--line);align-items:start;}
+  .band:last-child{border-bottom:1px solid var(--line);}
+  .bsw{align-self:stretch;border-radius:3px;min-height:40px;}
+  .bhead .bconc{font-family:var(--sans);font-weight:700;font-size:.82rem;letter-spacing:.08em;color:var(--ink);text-transform:uppercase;}
+  .bhead .brange{font-family:var(--serif);font-size:1.2rem;color:var(--navy);margin-top:3px;font-variant-numeric:tabular-nums;}
+  .band .bd{font-family:var(--sans);font-size:1rem;line-height:1.58;color:var(--muted);}
+
+  .pull{max-width:880px;margin:3.4rem auto;padding:0 20px;text-align:center;}
+  .pull blockquote{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(1.6rem,3vw,2.3rem);line-height:1.3;color:var(--navy);letter-spacing:-.01em;}
+  .pull .src{font-family:var(--sans);font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--bronze);margin-top:22px;}
+
+  /* worked example */
+  .example{max-width:var(--read);margin:3.4rem auto 0;border:1px solid var(--line);border-radius:4px;overflow:hidden;}
+  .example .exhead{background:var(--paper-2);border-bottom:1px solid var(--line);padding:18px 28px;}
+  .example .exk{font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--bronze);}
+  .example .ext{font-family:var(--serif);font-size:1.24rem;font-weight:500;color:var(--ink);margin-top:6px;}
+  .example .exbody{padding:8px 28px 22px;}
+  .exline{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--line);font-family:var(--sans);font-size:.98rem;color:var(--ink-soft);}
+  .exline:last-child{border-bottom:none;}
+  .exline .el{min-width:0;} .exline .el b{color:var(--ink);font-weight:600;}
+  .exline .ev{font-family:var(--serif);font-size:1.16rem;color:var(--navy);font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .exline .ev.zero{color:var(--muted);}
+  .extotal{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:14px;padding:18px 22px;background:var(--navy-3);border-radius:4px;}
+  .extotal .etf{font-family:var(--serif);font-style:italic;font-size:1.08rem;color:#fff;}
+  .extotal .etr{display:flex;align-items:center;gap:12px;}
+  .extotal .etv{font-family:var(--serif);font-size:1.7rem;font-weight:400;color:#fff;font-variant-numeric:tabular-nums;}
+  .extotal .etb{font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;border-radius:2px;background:rgba(215,45,1,.2);color:#ff8f6e;}
+
+  /* foundation cards */
+  .fund{max-width:var(--read);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  .fcard{background:var(--paper-2);border:1px solid var(--line);border-radius:4px;padding:26px 26px;}
+  .fcard .fk{font-family:var(--sans);font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--bronze);}
+  .fcard h3{font-family:var(--serif);font-size:1.24rem;font-weight:500;color:var(--ink);margin-top:8px;line-height:1.12;}
+  .fcard .fcond{font-family:ui-monospace,Menlo,monospace;font-size:.78rem;color:var(--ink-soft);background:var(--paper);border:1px solid var(--line);border-radius:2px;padding:4px 9px;display:inline-block;margin-top:12px;}
+  .fcard p{font-family:var(--sans);font-size:.97rem;line-height:1.6;color:var(--muted);margin-top:13px;}
+
+  .callout{max-width:var(--read);margin:3.4rem auto 0;background:var(--paper-2);border:1px solid var(--line);border-radius:4px;padding:40px 42px;}
+  .callout .k{font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--bronze);}
+  .callout h3{font-family:var(--serif);font-weight:500;font-size:1.55rem;line-height:1.2;margin:14px 0 0;color:var(--ink);}
+  .callout p{font-family:var(--sans);font-size:1.02rem;line-height:1.6;color:var(--muted);margin-top:14px;}
+  .callout .btn{margin-top:24px;}
+  .note{max-width:var(--read);margin:2.4rem auto 0;font-family:var(--sans);font-size:.86rem;line-height:1.55;color:var(--muted);font-style:italic;border-left:2px solid var(--line-2);padding-left:16px;}
+
+  /* related */
+  .related{background:var(--paper-2);border-top:1px solid var(--line);padding:84px 0;}
+  .related .rlabel{font-family:var(--sans);font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;font-weight:700;color:var(--ink);}
+  .rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:34px;margin-top:38px;}
+  .rcard{cursor:pointer;}
+  .rcard .rimg{aspect-ratio:16/10;border-radius:3px;margin-bottom:18px;transition:transform .5s var(--ease);}
+  .rcard:hover .rimg{transform:translateY(-5px);}
+  .rcard .rcat{font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--bronze);}
+  .rcard h4{font-family:var(--serif);font-size:1.32rem;font-weight:500;line-height:1.16;margin-top:11px;color:var(--ink);}
+
+  footer{background:var(--navy-3);border-top:1px solid var(--line-dark);padding:74px 0 40px;}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px;}
+  .foot-brand .logo{height:32px;margin-bottom:22px;}
+  .foot-brand p{font-family:var(--sans);font-size:.95rem;color:var(--on-dark-mute);max-width:32ch;line-height:1.6;}
+  .foot-col h4{font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--bronze-3);font-weight:700;margin-bottom:20px;}
+  .foot-col a{display:block;font-family:var(--sans);font-size:.96rem;color:var(--on-dark-mute);padding:7px 0;transition:color .25s;}
+  .foot-col a:hover{color:#fff;}
+  .foot-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-top:60px;padding-top:30px;border-top:1px solid var(--line-dark);}
+  .foot-bottom p{font-family:var(--sans);font-size:13px;color:var(--on-dark-mute);}
+  .foot-bottom .creg{font-family:var(--sans);font-size:12px;letter-spacing:.06em;color:var(--on-dark-mute);opacity:.7;}
+
+  .rv{opacity:1;transform:none;}
+  html.js .rv{transform:translateY(20px);transition:transform .8s var(--ease);}
+  html.js .rv.in{transform:none;}
+  @media (prefers-reduced-motion:reduce){html.js .rv{transform:none;transition:none;}html{scroll-behavior:auto;}}
+
+  @media (max-width:1080px){.wrap{padding:0 32px;}}
+  @media (max-width:860px){
+    .nav-links,.nav-cta{display:none;} .burger{display:flex;}
+    .score-hero{grid-template-columns:1fr;gap:30px;padding:40px 34px;text-align:center;}
+    .score-dial .big{font-size:5.6rem;}
+    .rgrid{grid-template-columns:1fr;gap:30px;}
+    .foot-grid{grid-template-columns:1fr 1fr;gap:40px;} .foot-brand{grid-column:1/-1;}
+  }
+  @media (max-width:540px){
+    .wrap{padding:0 22px;}
+    .dims-head{grid-template-columns:38px 1fr;}
+    .drow{grid-template-columns:38px 1fr;gap:0 14px;}
+    .drow .dest{grid-column:2;justify-self:start;margin-top:10px;}
+    .band{grid-template-columns:8px 1fr;gap:0 16px;} .band .bd{grid-column:2;margin-top:8px;}
+    .exline{grid-template-columns:1fr;} .exline .ev{justify-self:start;}
+    .fund{grid-template-columns:1fr;}
+    .foot-grid{grid-template-columns:1fr;} .callout{padding:30px 26px;}
+  }
+</style>
+</head>
+<body>
+<template id="__bundler_thumbnail">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<rect width="100" height="100" fill="#14233f"></rect>
+<text x="50" y="50" font-family="Newsreader, serif" font-size="32" font-weight="300" fill="#ffffff" text-anchor="middle">4,6</text>
+<text x="50" y="62" font-family="Newsreader, serif" font-size="12" font-weight="300" fill="#cfa06a" text-anchor="middle">/8</text>
+<text x="50" y="78" font-family="Hanken Grotesk, sans-serif" font-size="7" letter-spacing="3" font-weight="700" fill="#cfa06a" text-anchor="middle">IRC</text>
+</svg>
+</template>
+
+<!-- HEADER -->
+<header id="hdr">
+  <div class="wrap nav">
+    <a href="index.html" aria-label="RDS — página inicial"><img class="logo" src="assets/logo-rds-dark.png" alt="RDS — Engenharia e Consultoria"></a>
+    <nav class="nav-links">
+      <a href="artigos.html">Artigos</a>
+      <a href="noticias.html">Notícias</a>
+      <a href="servicos.html">Serviços</a>
+      <a href="quem-somos.html">Quem somos</a>
+      <a href="index.html#contato">Contato</a>
+    </nav>
+    <div class="nav-right">
+      <a class="nav-cta" href="index.html#contato">Falar com a RDS</a>
+      <button class="burger" id="burger" aria-label="Menu" onclick="location.href='index.html'"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- ARTICLE HEAD -->
+<section class="ahead">
+  <div class="wrap">
+    <span class="cat">Metodologia RDS</span>
+    <h1>Índice de <em>Risco do Contrato</em> (IRC)</h1>
+    <p class="dek">O índice de 0 a 8 que mede risco e continuidade de cada contrato — de forma independente da Nota Final, e como eixo de entrada da Classificação Estratégica.</p>
+    <div class="meta">
+      <span>Por <strong>RDS — Engenharia e Consultoria</strong></span>
+      <span class="dot"></span>
+      <span>Metodologia</span>
+      <span class="dot"></span>
+      <span>6 min de leitura</span>
+    </div>
+
+    <div class="score-hero">
+      <div class="road"><img src="assets/art-irc.png" alt=""></div>
+      <div class="score-dial">
+        <div class="big">4,6<sub>/8</sub></div>
+        <div class="lab">Exemplo · Risco alto</div>
+      </div>
+      <div class="scopy">
+        <p>Enquanto a Nota Final mede o que o contrato rende, o IRC mede o quanto ele pode ameaçar a empresa.</p>
+        <p class="sm">É um indicador autônomo: não compõe a Nota Final, mas ocupa coluna própria ao lado dela no Quadro de Notas — risco e desempenho lado a lado, contrato a contrato.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARTICLE BODY -->
+<article class="article">
+  <div class="prose">
+    <p class="lead-p">Uma nota alta não conta a história inteira. Um contrato pode render bem hoje e, ainda assim, carregar uma concentração de cliente, uma margem apertada ou um prazo curto que o tornam frágil amanhã. O desempenho mede o presente; o risco mede o que pode tirar esse presente de você.</p>
+
+    <p>O <strong>Índice de Risco do Contrato</strong> é um índice composto que mede, em escala objetiva de <strong>0 a 8</strong>, o nível de risco associado a um contrato — de forma independente da Nota Final. Enquanto a Nota Final exprime <em>desempenho</em>, o IRC exprime <em>risco e continuidade</em>. Ele é calculado para todo contrato ativo e exibido no Quadro de Notas, em coluna própria, ao lado da Nota Final.</p>
+  </div>
+
+  <div class="hr"></div>
+
+  <div class="prose">
+    <h2>As dimensões de risco</h2>
+    <p>O IRC é composto por quatro dimensões. Cada uma atribui pontos <strong>somente quando a respectiva condição de risco é atendida</strong> — um contrato saudável simplesmente não pontua. Quanto mais condições disparam, mais alto o índice.</p>
+  </div>
+
+  <div class="dims rv">
+    <div class="dims-head">
+      <span>Dim.</span><span>Dimensão · condição de risco</span>
+    </div>
+    <div class="drow">
+      <div class="dcode">D1</div>
+      <div class="dmain"><div class="dn">Rentabilidade</div><div class="dc">Resultado operacional &lt; 10%</div></div>
+    </div>
+    <div class="drow">
+      <div class="dcode">D2</div>
+      <div class="dmain"><div class="dn">Custo operacional</div><div class="dc">Custo operacional &gt; 65%</div></div>
+    </div>
+    <div class="drow">
+      <div class="dcode">D3</div>
+      <div class="dmain"><div class="dn">Sustentabilidade</div><div class="dc">VB &lt; 6 meses (vida do backlog)</div></div>
+    </div>
+    <div class="drow">
+      <div class="dcode">D4</div>
+      <div class="dmain"><div class="dn">Concentração de cliente</div><div class="dc">Maior cliente &gt; 60% da receita da UA</div></div>
+    </div>
+  </div>
+
+  <p class="note">As quatro dimensões aplicam-se a todo contrato ativo. As condições de risco de cada uma — e os respectivos parâmetros de corte — são calibradas para cada empresa na Configuração por Cliente.</p>
+
+  <div class="prose">
+    <h2>Como o índice é calculado</h2>
+    <p>O IRC soma os pontos das condições disparadas e normaliza esse total para a escala de 0 a 8. Como as quatro dimensões valem, juntas, no máximo 7 pontos, a divisão por esse teto e a multiplicação por 8 reposicionam qualquer contrato na mesma régua — preservando a comparabilidade entre contratos e entre ciclos.</p>
+  </div>
+
+  <div class="eq">
+    <div class="eqk">Cálculo do IRC</div>
+    <div class="eqf">IRC = ( Σ pontos atribuídos ÷ 7 ) × 8 <span class="eqno">(1)</span></div>
+    <p class="eqn">Sete é a soma máxima das quatro dimensões; multiplicar por 8 coloca o resultado na régua de 0 a 8. Assim, dois contratos quaisquer permanecem comparáveis na mesma escala.</p>
+  </div>
+
+  <div class="prose">
+    <h2>As faixas de risco</h2>
+    <p>O valor final cai em uma de três faixas, do verde ao vermelho. Cada faixa não é um rótulo — é o tratamento que ela exige, do acompanhamento de rotina à ficha de crise obrigatória.</p>
+  </div>
+
+  <div class="scale">
+    <div class="ruler">
+      <div class="rlabels">
+        <div class="rlab" style="width:25%"><span class="rc" style="color:#00803c">Baixo</span><span class="rr">0 – 2</span></div>
+        <div class="rlab" style="width:25%"><span class="rc" style="color:#9c7a00">Médio</span><span class="rr">2 – 4</span></div>
+        <div class="rlab" style="width:50%"><span class="rc" style="color:#c52802">Alto</span><span class="rr">4 – 8</span></div>
+      </div>
+      <div class="rtrack">
+        <div class="rseg s-low" style="width:25%"></div>
+        <div class="rseg s-mid" style="width:25%"></div>
+        <div class="rseg s-high" style="width:50%"></div>
+      </div>
+      <div class="rpointer" style="left:57.5%">
+        <div class="tri"></div>
+        <div class="pill">4,6 <small>Alto</small></div>
+      </div>
+    </div>
+
+    <div class="band">
+      <div class="bsw s-low"></div>
+      <div class="bhead"><div class="bconc">Baixo</div><div class="brange">0 ≤ IRC ≤ 2</div></div>
+      <div class="bd">Contrato estável, sem condições de risco relevantes disparadas. <strong style="color:var(--ink)">Acompanhamento normal</strong> — entra na rotina de monitoramento sem tratamento dedicado.</div>
+    </div>
+    <div class="band">
+      <div class="bsw s-mid"></div>
+      <div class="bhead"><div class="bconc">Médio</div><div class="brange">2 &lt; IRC ≤ 4</div></div>
+      <div class="bd">Uma ou mais frentes de risco em curso. <strong style="color:var(--ink)">Monitoramento</strong> ativo, com atenção às condições que podem empurrar o contrato para a faixa alta.</div>
+    </div>
+    <div class="band">
+      <div class="bsw s-high"></div>
+      <div class="bhead"><div class="bconc">Alto</div><div class="brange">4 &lt; IRC ≤ 8</div></div>
+      <div class="bd">Risco material à continuidade do contrato. <strong style="color:var(--ink)">Ficha de crise obrigatória</strong> — o caso é levado à diretoria com plano de tratamento, não apenas reportado.</div>
+    </div>
+  </div>
+
+  <div class="pull">
+    <blockquote>“A Nota Final diz o quanto o contrato vale. O IRC diz o quanto você pode perdê-lo. Decidir bem exige ler os dois ao mesmo tempo.”</blockquote>
+    <div class="src">RDS — Engenharia e Consultoria</div>
+  </div>
+
+  <div class="prose">
+    <h2>Um exemplo concreto</h2>
+    <p>Considere um contrato com resultado operacional de 8%, custo operacional em 70% da receita, backlog de 14 meses e maior cliente respondendo por 45% da receita. Só duas condições disparam:</p>
+  </div>
+
+  <div class="example rv">
+    <div class="exhead">
+      <div class="exk">Exemplo de cálculo</div>
+      <div class="ext">As quatro dimensões · máximo 7 pontos</div>
+    </div>
+    <div class="exbody">
+      <div class="exline"><div class="el"><b>D1 · Rentabilidade</b> — resultado de 8% (&lt; 10%)</div><div class="ev">+2</div></div>
+      <div class="exline"><div class="el"><b>D2 · Custo operacional</b> — custo de 70% (&gt; 65%)</div><div class="ev">+2</div></div>
+      <div class="exline"><div class="el"><b>D3 · Sustentabilidade</b> — backlog de 14 meses (&gt; 6)</div><div class="ev zero">0</div></div>
+      <div class="exline"><div class="el"><b>D4 · Concentração</b> — maior cliente em 45% (&lt; 60%)</div><div class="ev zero">0</div></div>
+      <div class="extotal">
+        <div class="etf">IRC = ( 4 ÷ 7 ) × 8</div>
+        <div class="etr"><div class="etv">4,6</div><span class="etb">Risco alto</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h2>Por que esses limiares?</h2>
+    <p>Os cortes do IRC não são arbitrários — cada um nasce da realidade dos contratos de supervisão e consultoria em infraestrutura rodoviária, onde a disputa por licitações e a dependência de contratantes públicos moldam o risco. É o que sustenta cada ponto atribuído.</p>
+  </div>
+
+  <div class="fund rv">
+    <div class="fcard">
+      <div class="fk">D1 · Rentabilidade</div>
+      <h3>Quando o resultado já não tem folga</h3>
+      <span class="fcond">resultado operacional &lt; 10%</span>
+      <p>A disputa por licitações pelo menor preço empurra os resultados para perto de zero. Abaixo de 10%, qualquer variação operacional — atraso de obra, redimensionamento de equipe, pagamento atrasado do contratante — elimina o que sobra. O limiar marca o ponto em que a viabilidade financeira deixa de absorver imprevistos.</p>
+    </div>
+    <div class="fcard">
+      <div class="fk">D2 · Custo operacional</div>
+      <h3>Um setor intensivo em custo fixo</h3>
+      <span class="fcond">custo operacional &gt; 65%</span>
+      <p>Mão de obra, veículos e instalações concentram o custo direto — itens de peso elevado e pouca flexibilidade. Paralisações e reduções de ritmo nas obras, riscos inerentes ao setor, desequilibram a operação. Acima de 65%, qualquer corte de medição ou suspensão parcial leva o contrato ao prejuízo, sem margem de absorção.</p>
+    </div>
+    <div class="fcard">
+      <div class="fk">D3 · Sustentabilidade</div>
+      <h3>O prazo preso ao ritmo das obras</h3>
+      <span class="fcond">saldo de prazo &lt; 6 meses</span>
+      <p>O prazo desses contratos costuma estar atrelado ao andamento da obra que supervisionam. Quando o saldo cai abaixo de 6 meses sem prorrogação prevista, a empresa entra no período terminal sem garantia de continuidade de receita — o que torna o saldo de prazo um preditor crítico de descontinuidade.</p>
+    </div>
+    <div class="fcard">
+      <div class="fk">D4 · Concentração de cliente</div>
+      <h3>Quando um só contratante move tudo</h3>
+      <span class="fcond">maior cliente &gt; 60% da receita</span>
+      <p>Contratantes públicos operam em ciclos orçamentários sujeitos a contingenciamentos, trocas de gestão e reavaliação de prioridades. Uma regional com mais de 60% da receita em um único contratante fica exposta a esse risco sistêmico de forma desproporcional: quando o orçamento daquele órgão trava, a carteira inteira trava junto.</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h2>Como o IRC conversa com o resto</h2>
+    <p>O IRC <strong>não compõe a Nota Final</strong> — é indicador autônomo, lido em paralelo. Seu papel maior é à frente: ele é o <strong>eixo de risco da Classificação Estratégica</strong>, cruzado com o desempenho para definir o destino de cada contrato — expandir, manter, renegociar ou encerrar. E ele se apoia na metodologia: a dimensão D3 utiliza a Vida do Backlog calculada à parte. Assim, desempenho, risco e decisão se encadeiam sem que nenhum dos três contamine a medição do outro.</p>
+  </div>
+
+  <div class="callout">
+    <span class="k">Comece por aqui</span>
+    <h3>Veja o IRC de cada contrato da sua carteira.</h3>
+    <p>O diagnóstico inicial entrega a Nota Final, o IRC e a Classificação Estratégica de cada contrato — o Quadro de Notas que coloca desempenho e risco lado a lado para decidir com clareza.</p>
+    <a class="btn btn-primary" href="index.html#contato">Agende um diagnóstico <span class="ar">→</span></a>
+  </div>
+
+  <p class="note">Os valores do exemplo são ilustrativos. As condições de risco de cada dimensão e os parâmetros de cálculo são calibrados para cada empresa na Configuração por Cliente.</p>
+</article>
+
+<!-- RELATED -->
+<section class="related">
+  <div class="wrap">
+    <div class="rlabel">Explore a RDS</div>
+    <div class="rgrid">
+      <a class="rcard" href="classificacao-estrategica.html">
+        <div class="rimg" style="background:#0e1a30 url('assets/art-classificacao.png') center/cover;"></div>
+        <div class="rcat">Metodologia RDS</div>
+        <h4>Classificação Estratégica do Contrato.</h4>
+      </a>
+      <a class="rcard" href="rds-score.html">
+        <div class="rimg" style="background:#0e1a30 url('assets/art-rds-score.png') center/cover;"></div>
+        <div class="rcat">Metodologia RDS</div>
+        <h4>O que é o RDS Score?</h4>
+      </a>
+      <a class="rcard" href="servicos.html">
+        <div class="rimg" style="background:#0e1a30 url('assets/art-servicos.png') center/cover;"></div>
+        <div class="rcat">Serviços</div>
+        <h4>Diagnóstico, monitoramento e consultoria da carteira contratual.</h4>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img class="logo" src="assets/logo-rds-light.png" alt="RDS — Engenharia e Consultoria">
+        <p>Diagnóstico, monitoramento e consultoria estratégica da carteira contratual de empresas de infraestrutura.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Conteúdo</h4>
+        <a href="artigos.html">Todos os artigos</a>
+        <a href="rds-score.html">RDS Score</a>
+        <a href="irc.html">Índice de Risco do Contrato</a>
+        <a href="classificacao-estrategica.html">Classificação Estratégica</a>
+      </div>
+      <div class="foot-col">
+        <h4>Serviços</h4>
+        <a href="servicos.html">Diagnóstico de carteira</a>
+        <a href="servicos.html">Monitoramento contínuo</a>
+        <a href="servicos.html">Consultoria estratégica</a>
+        <a href="servicos.html">Gerenciamento de projetos</a>
+      </div>
+      <div class="foot-col">
+        <h4>Contato</h4>
+        <a href="https://wa.me/5562999063430" target="_blank" rel="noopener">(62) 99906-3430</a>
+        <a href="mailto:atendimento@rdsengenhariaeconsultoria.com.br">E-mail</a>
+        <a href="index.html#contato">Goiânia / GO</a>
+        <a href="index.html#contato">Atendimento em todo o Brasil</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2026 RDS — Engenharia e Consultoria. Todos os direitos reservados.</p>
+      <span class="creg">Engenharia · Consultoria · Gestão de contratos</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const hdr = document.getElementById('hdr');
+  const onScroll = () => hdr.classList.toggle('solid', window.scrollY > 30);
+  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+
+  const rvEls = Array.from(document.querySelectorAll('.rv'));
+  function revealInView(){
+    const h = window.innerHeight || document.documentElement.clientHeight;
+    for(let i=rvEls.length-1;i>=0;i--){
+      const el = rvEls[i];
+      if(el.getBoundingClientRect().top < h*0.92){ el.classList.add('in'); rvEls.splice(i,1); }
+    }
+  }
+  revealInView();
+  window.addEventListener('scroll', revealInView, {passive:true});
+  window.addEventListener('resize', revealInView, {passive:true});
+  window.addEventListener('load', revealInView);
+  setTimeout(() => document.querySelectorAll('.rv').forEach(el => el.classList.add('in')), 2000);
+</script>
+</body>
+</html>
