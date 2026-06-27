@@ -40,7 +40,7 @@
   body{font-family:var(--sans);color:var(--ink);background:var(--paper);
     -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.5;overflow-x:hidden;}
   a{color:inherit;text-decoration:none;}
-  img{display:block;max-width:100%;}
+  img{display:block;max-width:100%;height:auto;}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 44px;}
 
   .btn{display:inline-flex;align-items:center;gap:10px;justify-content:center;font-family:var(--sans);
@@ -58,7 +58,7 @@
     transition:background .4s var(--ease),border-color .4s var(--ease);border-bottom:1px solid transparent;}
   header.solid{background:rgba(255,255,255,.9);backdrop-filter:blur(14px) saturate(1.4);border-bottom-color:var(--line);}
   .nav{display:flex;align-items:center;justify-content:space-between;height:78px;}
-  .nav .logo{height:38px;width:auto;}
+  .nav .logo{height:44px;width:auto;}
   .nav-links{display:flex;align-items:center;gap:36px;}
   .nav-links a{font-family:var(--sans);font-size:15px;font-weight:500;color:var(--ink-soft);transition:color .25s;position:relative;padding:6px 0;}
   .nav-links a:hover{color:var(--navy);}
@@ -182,7 +182,7 @@
 
   footer{background:var(--navy-3);border-top:1px solid var(--line-dark);padding:74px 0 40px;}
   .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px;}
-  .foot-brand .logo{height:32px;margin-bottom:22px;}
+  .foot-brand .logo{height:32px;width:auto;margin-bottom:22px;}
   .foot-brand p{font-family:var(--sans);font-size:.95rem;color:var(--on-dark-mute);max-width:32ch;line-height:1.6;}
   .foot-col h4{font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--bronze-3);font-weight:700;margin-bottom:20px;}
   .foot-col a{display:block;font-family:var(--sans);font-size:.96rem;color:var(--on-dark-mute);padding:7px 0;transition:color .25s;}
@@ -227,7 +227,7 @@
 <!-- HEADER -->
 <header id="hdr">
   <div class="wrap nav">
-    <a href="index.html" aria-label="RDS — página inicial"><img class="logo" src="assets/logo-rds-dark.png" alt="RDS — Engenharia e Consultoria"></a>
+    <a href="index.html" aria-label="RDS — página inicial"><img class="logo" src="assets/logo-rds-dark.png" width="640" height="119" alt="RDS — Engenharia e Consultoria"></a>
     <nav class="nav-links">
       <a href="artigos.html">Artigos</a>
       <a href="noticias.html">Notícias</a>
@@ -257,7 +257,7 @@
     </div>
 
     <div class="chain-hero">
-      <div class="road"><img src="assets/art-classificacao.png" alt=""></div>
+      <div class="road"><img src="assets/art-classificacao.jpg" width="1024" height="1024" alt=""></div>
       <div class="chain">
         <div class="cnode"><div class="cl">Desempenho</div><div class="cv">Nota Final</div></div>
         <div class="carrow">→</div>
@@ -414,17 +414,17 @@
     <div class="rlabel">Explore a RDS</div>
     <div class="rgrid">
       <a class="rcard" href="rds-score.html">
-        <div class="rimg" style="background:#0e1a30 url('assets/art-rds-score.png') center/cover;"></div>
+        <div class="rimg" style="background:#0e1a30 url('assets/art-rds-score.jpg') center/cover;"></div>
         <div class="rcat">Metodologia RDS</div>
         <h4>O que é o RDS Score?</h4>
       </a>
       <a class="rcard" href="irc.html">
-        <div class="rimg" style="background:#0e1a30 url('assets/art-irc.png') center/cover;"></div>
+        <div class="rimg" style="background:#0e1a30 url('assets/art-irc.jpg') center/cover;"></div>
         <div class="rcat">Metodologia RDS</div>
         <h4>Índice de Risco do Contrato (IRC).</h4>
       </a>
       <a class="rcard" href="servicos.html">
-        <div class="rimg" style="background:#0e1a30 url('assets/art-servicos.png') center/cover;"></div>
+        <div class="rimg" style="background:#0e1a30 url('assets/art-servicos.jpg') center/cover;"></div>
         <div class="rcat">Serviços</div>
         <h4>Diagnóstico, monitoramento e consultoria da carteira contratual.</h4>
       </a>
@@ -437,7 +437,7 @@
   <div class="wrap">
     <div class="foot-grid">
       <div class="foot-brand">
-        <img class="logo" src="assets/logo-rds-light.png" alt="RDS — Engenharia e Consultoria">
+        <img class="logo" src="assets/logo-rds-light.png" width="640" height="119" alt="RDS — Engenharia e Consultoria">
         <p>Diagnóstico, monitoramento e consultoria estratégica da carteira contratual de empresas de infraestrutura.</p>
       </div>
       <div class="foot-col">
