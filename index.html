@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="assets/favicon-32.png" sizes="32x32">
 <link rel="icon" type="image/png" href="assets/favicon.png" sizes="512x512">
 <link rel="apple-touch-icon" href="assets/favicon.png">
@@ -140,6 +141,7 @@
   .feat-img{aspect-ratio:4/2.6;border-radius:3px;box-shadow:0 12px 30px -12px rgba(20,35,63,.22);}
   .feat-img .tag{margin:18px;}
   .feat-body .cat{font-family:var(--sans);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:var(--bronze);}
+  .feat-body .fdate{font-family:var(--sans);font-size:13px;letter-spacing:.04em;color:var(--muted);margin-top:14px;}
   .feat-body h1{font-size:clamp(2.1rem,3.6vw,3.3rem);font-weight:400;letter-spacing:-.02em;line-height:1.04;margin-top:18px;}
   .feat-body h1 em{font-style:italic;color:var(--navy);}
   .feat-body .dek{font-family:var(--sans);font-size:clamp(1rem,1.2vw,1.12rem);color:var(--muted);line-height:1.6;margin-top:20px;max-width:46ch;font-weight:400;}
@@ -148,7 +150,7 @@
   .feat-body .read{margin-top:26px;}
 
   /* ============ INSIGHTS ROW ============ */
-  .insights{padding:96px 0 30px;}
+  .insights{padding:34px 0 30px;}
   .row-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
     padding-bottom:26px;margin-bottom:40px;border-bottom:1px solid var(--line);}
   .row-head h2{font-size:clamp(1.7rem,3vw,2.5rem);font-weight:400;letter-spacing:-.018em;max-width:none;}
@@ -339,16 +341,9 @@
       <a class="feat-img rv" href="noticia-enacor-tecnica.html" aria-label="Abrir notícia em destaque" style="background:#0e1a30 url('assets/tecnica-ipave-dnit.png') center/cover;"></a>
       <div class="feat-body">
         <span class="cat rv">Em destaque · Notícia</span>
+        <div class="fdate rv d1">26 de junho de 2026</div>
         <h1 class="rv d1"><a href="noticia-enacor-tecnica.html">ENACOR 2026 consolida Goiânia como <em>polo de inovação</em> e debate técnico na infraestrutura rodoviária.</a></h1>
         <p class="dek rv d2">A programação técnica reuniu 28 palestras, seis minicursos especializados e 140 trabalhos científicos sobre gerenciamento de pavimentos, inteligência artificial, segurança viária e sustentabilidade.</p>
-        <div class="meta rv d2">
-          <span>Por RDS — Engenharia e Consultoria</span>
-          <span class="dot"></span>
-          <span>26 de junho de 2026</span>
-        </div>
-        <div class="read rv d3">
-          <a class="readlink" href="noticia-enacor-tecnica.html">Ler a notícia <span class="ar">→</span></a>
-        </div>
       </div>
     </article>
   </div>
@@ -394,7 +389,7 @@
       <!-- COLUNA DIREITA: NOTÍCIAS -->
       <div class="rv d1">
         <div class="col-head">
-          <span class="seclabel">Notícias</span>
+          <span class="seclabel">Últimas notícias</span>
           <a class="more" href="noticias.html">Ver todas <span class="ar">→</span></a>
         </div>
         <a class="nitem" href="noticia-enacor-tecnica.html" style="text-decoration:none;color:inherit;">
